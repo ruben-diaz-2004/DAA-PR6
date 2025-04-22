@@ -1,0 +1,19 @@
+#ifndef ELEMENT_H
+#define ELEMENT_H
+
+#include <vector>
+
+class Element {
+public:
+  Element(int id, const std::vector<double>& nodes)
+      : id_(id), nodes_(nodes) {}
+
+  int getId() const { return id_; }
+  const std::vector<double>& getNodes() const { return nodes_; }
+
+private:
+  int id_;
+  std::vector<double> nodes_;
+};
+
+#endif // ELEMENT_H

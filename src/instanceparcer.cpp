@@ -1,0 +1,40 @@
+#include "include/instanceparcer.h"
+#include "include/element.h"
+#include <algorithm>
+
+InstanceParser::InstanceParser(const std::string& filename) : filename_(filename) { 
+  parse();
+}
+
+void InstanceParser::parse() {
+  std::ifstream file(filename_);
+  if (!file.is_open()) {
+    std::cerr << "Error opening file: " << filename_ << std::endl;
+    return;
+  }
+  std::string line;
+  int id = 0;
+  // First line is the number of elements
+  std::getline(file, line);
+  int numElements = std::stoi(line);
+  elements_.reserve(numElements);
+  // Second line is the dimension (K)
+  std::getline(file, line);
+  // int dimension = std::stoi(line);
+  // Next lines are the elements
+  while (std::getline(file, line)) {
+    std::vector<double> nodes;
+    std::istringstream iss(line);
+    std::string coordinate;
+    // Process each coordinate (separated by tabs)
+    while (std::getline(iss, coordinate, '\t')) {
+      // Replace comma with dot for proper decimal parsing
+      std::replace(coordinate.begin(), coordinate.end(), ',', '.');
+      double value = std::stod(coordinate);
+      nodes.push_back(value);
+    }
+    elements_.emplace_back(id++, nodes);
+  }
+  file.close();
+  std::cout << "Parsed " << elements_.size() << " elements from " << filename_ << std::endl;
+}
