@@ -18,9 +18,9 @@
 
 
 struct parameters {
-  int algorithm = 3;     // 0: no algorithm selected, 1: greedy, 2: grasp
+  int algorithm = 1;     // 0: no algorithm selected, 1: greedy, 2: grasp
   int graspN = 3;        // Default value for graspN (candidatos)
-  int iterations = 100;  // Default number of GRASP iterations
+  int m = 2;  // Default number of GRASP iterations
 };
 
 parameters parse_args(int argc, char* argv[]) {
@@ -36,9 +36,9 @@ parameters parse_args(int argc, char* argv[]) {
       if (it + 1 != end) {
         options.graspN = std::stoi(*++it);
       }
-    } else if (*it == "-i") {
+    } else if (*it == "-m") {
       if (it + 1 != end) {
-        options.iterations = std::stoi(*++it);
+        options.m = std::stoi(*++it);
       }
     } else if (*it == "-help") {
       std::cout << "Usage: " << argv[0] << " <input_file> [-greedy | -grasp <n>] [-iterations <n>]" << std::endl;
