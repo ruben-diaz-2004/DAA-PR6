@@ -36,6 +36,8 @@ parameters parse_args(int argc, char* argv[]) {
       if (it + 1 != end) {
         options.graspN = std::stoi(*++it);
       }
+    } else if (*it == "-ls") {
+      options.algorithm = 3;
     } else if (*it == "-m") {
       if (it + 1 != end) {
         options.m = std::stoi(*++it);

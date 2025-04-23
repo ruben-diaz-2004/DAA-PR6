@@ -21,7 +21,8 @@
 #include "include/algorithm.h"
 #include "include/greedy.h"
 #include "include/grasp.h"
-  
+#include "include/localsearch.h"  
+
 int main(int argc, char* argv[]) {
   // Check if input file and m are provided
   if (argc < 3) {
@@ -57,6 +58,14 @@ int main(int argc, char* argv[]) {
       solution.setSelectedElements(grasp.solve());
       break;
     }
+    case 3: { // Local Search algorithm
+      std::cout << "Using Local Search Algorithm...\n";
+      GraspAlgorithm grasp(instance, options.m, options.graspN);
+      solution.setSelectedElements(grasp.solve());
+      LocalSearch localSearch(solution, options.m);
+      localSearch.runLocalSearch();
+      break;
+    }
     default:
       std::cerr << "Error: No algorithm selected." << std::endl;
       return 1;
@@ -79,7 +88,7 @@ int main(int argc, char* argv[]) {
   }
   
   // Print result in unified format for later processing
-  std::cout << "RESULTADO," << filename << "," << options.m << "," << solution.evaluateDiversity() << "," << cpu_time << std::endl;
+  std::cout << "RESULTADO," << filename << "," << options.m << "," << solution.evaluateDiversity(solution.getSelectedElements()) << "," << cpu_time << std::endl;
 
   return 0;
 }
