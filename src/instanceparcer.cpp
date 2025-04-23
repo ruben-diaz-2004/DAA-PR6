@@ -28,11 +28,16 @@ void InstanceParser::parse() {
     std::string coordinate;
     // Process each coordinate (separated by tabs)
     while (std::getline(iss, coordinate, '\t')) {
-      // Replace comma with dot for proper decimal parsing
       std::replace(coordinate.begin(), coordinate.end(), ',', '.');
-      double value = std::stod(coordinate);
-      nodes.push_back(value);
-    }
+      if (coordinate.empty()) continue; // ← evita errores con coordenadas vacías
+      try {
+        double value = std::stod(coordinate);
+        nodes.push_back(value);
+      } catch (const std::invalid_argument& e) {
+        std::cerr << "Error: coordenada inválida '" << coordinate << "' en línea: " << line << std::endl;
+        throw;
+      }
+    }    
     elements_.emplace_back(id++, nodes);
   }
   file.close();

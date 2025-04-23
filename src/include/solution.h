@@ -24,12 +24,12 @@ public:
     const std::vector<Element>& getSelectedElements() const { return selectedElements_; }
     
     // Evaluates the diversity of the solution (sum of pairwise distances)
-    double evaluateDiversity() const {
+    double evaluateDiversity(const std::vector<Element>& selectedElements) const {
         double diversity = 0.0;
         
-        for (size_t i = 0; i < selectedElements_.size(); ++i) {
-            for (size_t j = i + 1; j < selectedElements_.size(); ++j) {
-                diversity += calculateDistance(selectedElements_[i].getNodes(), selectedElements_[j].getNodes());
+        for (size_t i = 0; i < selectedElements.size(); ++i) {
+            for (size_t j = i + 1; j < selectedElements.size(); ++j) {
+                diversity += calculateDistance(selectedElements[i].getNodes(), selectedElements_[j].getNodes());
             }
         }
         
@@ -46,7 +46,7 @@ public:
             }
             std::cout << "\n";
         }
-        std::cout << "Total diversity: " << evaluateDiversity() << std::endl;
+        std::cout << "Total diversity: " << evaluateDiversity(selectedElements_) << std::endl;
     }
 
 private:

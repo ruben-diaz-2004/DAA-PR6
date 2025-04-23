@@ -11,6 +11,10 @@ public:
   int getId() const { return id_; }
   const std::vector<double>& getNodes() const { return nodes_; }
 
+  bool operator==(const Element& other) const {
+    return id_ == other.id_;
+  }
+
 private:
   int id_;
   std::vector<double> nodes_;
