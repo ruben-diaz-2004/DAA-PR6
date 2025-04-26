@@ -17,10 +17,12 @@ void InstanceParser::parse() {
   // First line is the number of elements
   std::getline(file, line);
   int numElements = std::stoi(line);
+  n_ = numElements;
   elements_.reserve(numElements);
   // Second line is the dimension (K)
   std::getline(file, line);
-  // int dimension = std::stoi(line);
+  int dimension = std::stoi(line);
+  K_ = dimension;
   // Next lines are the elements
   while (std::getline(file, line)) {
     std::vector<double> nodes;

@@ -12,11 +12,15 @@ public:
   void printInstance() const;
   const std::vector<Element>& getElements() const { return elements_; }
   double getDistance(int id1, int id2) const;
-
+  int getN() const { return n_; }
+  int getK() const { return K_; }
+  
 private:
   std::vector<Element> elements_;
   int numElements_;
   std::vector<std::vector<double>> distanceMatrix_;
+  int n_;
+  int K_;
   void calculateDistanceMatrix();
 };
 

@@ -10,7 +10,14 @@ public:
 
   int getId() const { return id_; }
   const std::vector<double>& getNodes() const { return nodes_; }
-
+  std::string Nodes() const {
+    std::string result;
+    for (const auto& node : nodes_) {
+      result += std::to_string(node) + " ";
+    }
+    return result;
+  }
+  
   bool operator==(const Element& other) const {
     return id_ == other.id_;
   }

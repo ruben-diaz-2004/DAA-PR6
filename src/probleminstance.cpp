@@ -8,6 +8,8 @@ ProblemInstance::ProblemInstance(const std::string& filename) {
     InstanceParser parser(filename);
     elements_ = parser.getElements();
     numElements_ = elements_.size();
+    n_ = parser.getN();
+    K_ = parser.getK();
     calculateDistanceMatrix();
 }
 

@@ -21,7 +21,8 @@
 #include "include/algorithm.h"
 #include "include/greedy.h"
 #include "include/grasp.h"
-#include "include/localsearch.h"  
+#include "include/localsearch.h"
+#include "include/utils.h"
 
 int main(int argc, char* argv[]) {
   // Check if input file and m are provided
@@ -88,7 +89,7 @@ int main(int argc, char* argv[]) {
   }
   
   // Print result in unified format for later processing
-  std::cout << "RESULTADO," << filename << "," << options.m << "," << solution.evaluateDiversity(solution.getSelectedElements()) << "," << cpu_time << std::endl;
+  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << std::endl;
 
   return 0;
 }

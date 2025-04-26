@@ -1,11 +1,12 @@
 #include "include/localsearch.h"
 #include "include/element.h"
 #include "include/solution.h"
+#include "include/utils.h"
 
 
 void LocalSearch::runLocalSearch() {
   std::vector<Element> currentSolution = solution_.getSelectedElements();
-  double currentDiversity = solution_.evaluateDiversity(currentSolution);
+  double currentDiversity = evaluateDiversity(currentSolution);
   bool improved = true;
 
   while (improved) {
@@ -21,7 +22,7 @@ void LocalSearch::runLocalSearch() {
               if (std::find(currentSolution.begin(), currentSolution.end(), candidate) == currentSolution.end()) {
                   // Try the swap
                   currentSolution[i] = candidate;
-                  double newDiversity = solution_.evaluateDiversity(currentSolution);
+                  double newDiversity = evaluateDiversity(currentSolution);
                   
                   // Keep track of the best candidate
                   if (newDiversity > bestSwapDiversity) {

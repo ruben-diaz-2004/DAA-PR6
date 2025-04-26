@@ -12,11 +12,15 @@ class InstanceParser {
 public:
   InstanceParser(const std::string& filename);
   const std::vector<Element>& getElements() const { return elements_; }
+  int getN() const { return n_; }
+  int getK() const { return K_; }
 
 private:
   std::vector<Element> elements_;
   std::string filename_;
   void parse();
+  int n_;
+  int K_;
 };
 
 #endif // INSTANCE_PARSER_H
