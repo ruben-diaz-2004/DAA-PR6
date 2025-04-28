@@ -3,7 +3,7 @@
 
 
   // Calculate Euclidean distance between two points
-double calculateDistance(const std::vector<double>& p1, const std::vector<double>& p2) {
+inline double calculateDistance(const std::vector<double>& p1, const std::vector<double>& p2) {
   double sum = 0.0;
   for (size_t i = 0; i < p1.size(); ++i) {
     sum += std::pow(p1[i] - p2[i], 2);
@@ -12,7 +12,7 @@ double calculateDistance(const std::vector<double>& p1, const std::vector<double
 }
 
 // Evaluates the diversity of the solution (sum of pairwise distances)
-double evaluateDiversity(const std::vector<Element>& selectedElements) {
+inline double evaluateDiversity(const std::vector<Element>& selectedElements) {
   double diversity = 0.0;
   
   for (size_t i = 0; i < selectedElements.size(); ++i) {

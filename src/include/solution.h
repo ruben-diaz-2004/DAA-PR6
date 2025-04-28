@@ -40,7 +40,8 @@ public:
   std::string toString() const {
     std::string result = "";
     for (const auto& element : selectedElements_) {
-      result += element.Nodes() + " ";
+      // result += element.Nodes() + " ";
+      result += std::to_string(element.getId()) + " ";
     }
     return result;
   }

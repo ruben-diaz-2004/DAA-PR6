@@ -11,8 +11,8 @@
 
 class GraspAlgorithm : public Algorithm {
 public:
-  GraspAlgorithm(ProblemInstance& instance, int m, int n)
-    : Algorithm(instance), m_(m), n_(n) {
+  GraspAlgorithm(ProblemInstance& instance, int m, int n, int iterations)
+    : Algorithm(instance), m_(m), n_(n), iterations_(iterations) {
     selectedElements_.reserve(m_);
   }
 
@@ -21,6 +21,7 @@ public:
 private:
   int m_; // Number of elements to select
   int n_; // Number of elements to sample
+  int iterations_; // Number of GRASP iterations
   std::vector<Element> selectedElements_;
 };
 

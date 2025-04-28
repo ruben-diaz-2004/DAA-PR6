@@ -55,13 +55,13 @@ int main(int argc, char* argv[]) {
     }
     case 2: { // GRASP algorithm
       std::cout << "Using GRASP Algorithm...\n";
-      GraspAlgorithm grasp(instance, options.m, options.graspN);
+      GraspAlgorithm grasp(instance, options.m, options.graspN, options.iterations);
       solution.setSelectedElements(grasp.solve());
       break;
     }
     case 3: { // Local Search algorithm
       std::cout << "Using Local Search Algorithm...\n";
-      GraspAlgorithm grasp(instance, options.m, options.graspN);
+      GraspAlgorithm grasp(instance, options.m, options.graspN, options.iterations);
       solution.setSelectedElements(grasp.solve());
       LocalSearch localSearch(solution, options.m);
       localSearch.runLocalSearch();
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
   }
   
   // Print result in unified format for later processing
-  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << std::endl;
+  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << options.iterations << ", " << options.graspN << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << std::endl;
 
   return 0;
 }

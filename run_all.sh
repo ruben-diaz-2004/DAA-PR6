@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define los parámetros para el algoritmo (ajusta según tus necesidades)
-ALGORITHM="-greedy"  # Puedes cambiar a "-greedy" si prefieres
+ALGORITHM="-grasp 2"  # Puedes cambiar a "-greedy" si prefieres
 GRASP_N=5
 M=5
 
@@ -11,7 +11,7 @@ mkdir -p $RESULTS_DIR
 
 # Crear un archivo para los resultados dentro de la carpeta
 RESULTS_FILE="$RESULTS_DIR/resultados.csv"
-echo "Instancia, n, K, m, z, S, Tiempo CPU" > $RESULTS_FILE
+echo "Instancia, n, K, m, iter, LRC, z, S, Tiempo CPU" > $RESULTS_FILE
 
 # Ejecutar el programa para cada archivo en la carpeta instances
 for file in instances/*; do
@@ -19,7 +19,7 @@ for file in instances/*; do
     echo "Procesando $file..."
     
     # Ejecutar el programa con los parámetros adecuados
-    output=$(./bin/daa-prs "$file" $ALGORITHM -m $M)
+    output=$(./bin/daa-prs "$file" $ALGORITHM -m $M -it 20)
     # output=$(./bin/daa-prs "$file")
 
     # Extraer la línea de resultado (la que comienza con RESULTADO)
