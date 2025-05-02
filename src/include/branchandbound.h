@@ -49,6 +49,9 @@ public:
 private:
     int m_;  // Number of elements to select
     
+    // Get greedy solution for initial lower bound
+    std::vector<Element> getGreedySolution(const std::vector<Element>& elements, int numToSelect);
+    
     // Calculate upper bound for a node
     double calculateUpperBound(const std::vector<Element>& selected, 
                               const std::vector<Element>& candidates,

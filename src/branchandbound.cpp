@@ -16,7 +16,9 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
     std::vector<Element> allElements = instance_.getElements();
     
     // Get an initial lower bound using greedy algorithm
-    bestDiversity = getLowerBound(allElements, m_);
+    std::vector<Element> greedySolution = getGreedySolution(allElements, m_);
+    bestDiversity = evaluateDiversity(greedySolution);
+    bestSolution = greedySolution;
     
     std::cout << "Initial lower bound (greedy solution): " << bestDiversity << std::endl;
     
@@ -96,6 +98,30 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
     return bestSolution;
 }
 
+std::vector<Element> BranchAndBoundAlgorithm::getGreedySolution(const std::vector<Element>& elements, int numToSelect) {
+    // Create a copy of the elements to work with
+    std::vector<Element> elementsCopy = elements;
+    std::vector<Element> selectedElements;
+    selectedElements.reserve(numToSelect);
+    
+    // Calculate the center of gravity of all elements
+    std::vector<double> center = calculateCenterOfGravity(elementsCopy);
+    
+    // Select m elements using greedy algorithm
+    while (selectedElements.size() < numToSelect && !elementsCopy.empty()) {
+        int farthestIdx = findNFarthestElement(elementsCopy, center, 3);
+        if (farthestIdx == -1) break;
+        
+        selectedElements.push_back(elementsCopy[farthestIdx]);
+        elementsCopy.erase(elementsCopy.begin() + farthestIdx);
+        
+        // Update center of gravity based on selected elements
+        center = calculateCenterOfGravity(selectedElements);
+    }
+    
+    return selectedElements;
+}
+
 double BranchAndBoundAlgorithm::calculateDiversityContribution(
     const Element& element, const std::vector<Element>& selected) {
     
@@ -107,94 +133,63 @@ double BranchAndBoundAlgorithm::calculateDiversityContribution(
 }
 
 double BranchAndBoundAlgorithm::calculateUpperBound(
-    const std::vector<Element>& selected, const std::vector<Element>& candidates, double currentDiversity) {
-    
-    if (candidates.empty() || selected.size() >= m_) {
-        return currentDiversity;
-    }
-    
-    // Calculate maximum potential contribution from remaining elements
-    // We need to select (m_ - selected.size()) more elements from candidates
-    int remainingToSelect = m_ - selected.size();
-    
-    if (remainingToSelect >= candidates.size()) {
-        // If we need to select all remaining candidates, calculate exact diversity
-        std::vector<Element> completeSet = selected;
-        completeSet.insert(completeSet.end(), candidates.begin(), candidates.end());
-        return evaluateDiversity(completeSet);
-    }
-    
-    // Calculate all pairwise distances between candidates
-    std::vector<std::pair<std::pair<int, int>, double>> candidateDistances;
-    for (size_t i = 0; i < candidates.size(); i++) {
-        for (size_t j = i + 1; j < candidates.size(); j++) {
-            double dist = calculateDistance(candidates[i].getNodes(), candidates[j].getNodes());
-            candidateDistances.push_back(std::make_pair(std::make_pair(i, j), dist));
-        }
-    }
-    
-    // Sort distances in descending order
-    std::sort(candidateDistances.begin(), candidateDistances.end(), 
-              [](const auto& a, const auto& b) { return a.second > b.second; });
-    
-    // Calculate distances from each candidate to already selected elements
-    std::vector<double> candidateContributions;
-    for (const auto& candidate : candidates) {
-        double contribution = 0.0;
-        for (const auto& selectedElement : selected) {
-            contribution += calculateDistance(candidate.getNodes(), selectedElement.getNodes());
-        }
-        candidateContributions.push_back(contribution);
-    }
-    
-    // Sort contributions in descending order
-    std::sort(candidateContributions.begin(), candidateContributions.end(), std::greater<double>());
-    
-    // Calculate an upper bound
-    double upperBound = currentDiversity;
-    
-    // Add top k contributions from candidates to selected elements
-    for (int i = 0; i < remainingToSelect && i < static_cast<int>(candidateContributions.size()); i++) {
-        upperBound += candidateContributions[i];
-    }
-    
-    // Add top possible pairwise distances between newly selected elements
-    // We need to be careful not to double-count elements here
-    // This is a greedy approximation of the maximum value we could get
-    
-    // Create a set to keep track of which candidate indices have been used
-    std::set<int> usedIndices;
-    int pairsAdded = 0;
-    int maxPairsToAdd = (remainingToSelect * (remainingToSelect - 1)) / 2;
-    
-    for (const auto& distPair : candidateDistances) {
-        int idx1 = distPair.first.first;
-        int idx2 = distPair.first.second;
-        
-        if (usedIndices.size() < remainingToSelect || 
-            (usedIndices.find(idx1) != usedIndices.end() && usedIndices.find(idx2) != usedIndices.end())) {
-            
-            if (usedIndices.find(idx1) == usedIndices.end() && usedIndices.size() < remainingToSelect) {
-                usedIndices.insert(idx1);
-            }
-            
-            if (usedIndices.find(idx2) == usedIndices.end() && usedIndices.size() < remainingToSelect) {
-                usedIndices.insert(idx2);
-            }
-            
-            if (usedIndices.find(idx1) != usedIndices.end() && usedIndices.find(idx2) != usedIndices.end()) {
-                upperBound += distPair.second;
-                pairsAdded++;
-                
-                if (pairsAdded >= maxPairsToAdd) {
-                    break;
-                }
-            }
-        }
-    }
-    
-    return upperBound;
+  const std::vector<Element>& selected,
+  const std::vector<Element>& candidates,
+  double currentDiversity) {
+  
+  if (selected.size() >= m_ || candidates.empty()) {
+      return currentDiversity;
+  }
+
+  int remainingToSelect = m_ - selected.size();
+
+  // Paso 1: Agregar diversidad actual
+  double upperBound = currentDiversity;
+
+  // Paso 2: Calcular contribuciones individuales de cada candidato al conjunto actual
+  std::vector<double> contributionsToSelected;
+  for (const auto& candidate : candidates) {
+      double contribution = 0.0;
+      for (const auto& sel : selected) {
+          contribution += calculateDistance(candidate.getNodes(), sel.getNodes());
+      }
+      contributionsToSelected.push_back(contribution);
+  }
+
+  // Ordenar y sumar las k mayores contribuciones
+  std::sort(contributionsToSelected.begin(), contributionsToSelected.end(), std::greater<double>());
+  for (int i = 0; i < std::min(remainingToSelect, (int)contributionsToSelected.size()); ++i) {
+      upperBound += contributionsToSelected[i];
+  }
+
+  // Paso 3: Estimar la mejor diversidad posible entre los nuevos seleccionados
+  // (las distancias entre pares de los candidatos)
+  std::vector<std::pair<int, int>> selectedIndices;
+  int n = candidates.size();
+
+  // Calcular y guardar todas las distancias entre pares de candidatos
+  std::vector<double> pairwiseDistances;
+  for (int i = 0; i < n; ++i) {
+      for (int j = i + 1; j < n; ++j) {
+          double dist = calculateDistance(candidates[i].getNodes(), candidates[j].getNodes());
+          pairwiseDistances.push_back(dist);
+      }
+  }
+
+  // Ordenar de mayor a menor
+  std::sort(pairwiseDistances.begin(), pairwiseDistances.end(), std::greater<double>());
+
+  // Calcular cuántos pares únicos puede haber entre los nuevos elementos
+  int maxPairs = (remainingToSelect * (remainingToSelect - 1)) / 2;
+
+  // Sumar las distancias más grandes posibles entre los nuevos seleccionados
+  for (int i = 0; i < std::min(maxPairs, (int)pairwiseDistances.size()); ++i) {
+      upperBound += pairwiseDistances[i];
+  }
+
+  return upperBound;
 }
+
 
 double BranchAndBoundAlgorithm::getLowerBound(const std::vector<Element>& initialElements, int numToSelect) {
     // Create a temporary instance with the initial elements
