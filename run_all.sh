@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define los parámetros para el algoritmo (ajusta según tus necesidades)
-ALGORITHM="-grasp 2"  # Puedes cambiar a "-greedy" si prefieres
+ALGORITHM="-bnb"  # Puedes cambiar a "-greedy" si prefieres
 GRASP_N=5
 M=5
 

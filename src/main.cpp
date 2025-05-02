@@ -22,13 +22,14 @@
 #include "include/greedy.h"
 #include "include/grasp.h"
 #include "include/localsearch.h"
+#include "include/branchandbound.h"
 #include "include/utils.h"
 
 int main(int argc, char* argv[]) {
   // Check if input file and m are provided
   if (argc < 3) {
     std::cerr << "Error: Insufficient arguments." << std::endl;
-    std::cerr << "Usage: " << argv[0] << " <input_file> <m> [-greedy | -grasp <n>]" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " <input_file> <m> [-greedy | -grasp <n> | -bnb]" << std::endl;
     return 1;
   }
   
@@ -65,6 +66,12 @@ int main(int argc, char* argv[]) {
       solution.setSelectedElements(grasp.solve());
       LocalSearch localSearch(solution, options.m);
       localSearch.runLocalSearch();
+      break;
+    }
+    case 4: { // Branch and Bound algorithm
+      std::cout << "Using Branch and Bound Algorithm...\n";
+      BranchAndBoundAlgorithm bnb(instance, options.m);
+      solution.setSelectedElements(bnb.solve());
       break;
     }
     default:
