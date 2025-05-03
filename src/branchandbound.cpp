@@ -1,4 +1,6 @@
 #include "include/branchandbound.h"
+#include "include/grasp.h"
+#include "include/bnbnode.h"
 #include "include/element.h"
 #include "include/utils.h"
 #include <queue>
@@ -8,19 +10,15 @@
 #include <set>
 
 std::vector<Element> BranchAndBoundAlgorithm::solve() {
-    // Initialize best solution and best diversity
     std::vector<Element> bestSolution;
     double bestDiversity = 0.0;
-
-    // Get all elements
     std::vector<Element> allElements = instance_.getElements();
-    
-    // Get an initial lower bound using greedy algorithm
-    std::vector<Element> greedySolution = getGreedySolution(allElements, m_);
+    GraspAlgorithm grasp(instance_, m_, lrc_, 10);
+    std::vector<Element> greedySolution = grasp.solve();
     bestDiversity = evaluateDiversity(greedySolution);
     bestSolution = greedySolution;
     
-    std::cout << "Initial lower bound (greedy solution): " << bestDiversity << std::endl;
+    std::cout << "Initial lower bound (grasp solution): " << bestDiversity << std::endl;
     
     // If m_ is equal to the total number of elements, return all elements
     if (m_ >= allElements.size()) {
@@ -39,12 +37,11 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
     queue.push(rootNode);
     
     // Start branch and bound
-    int nodesExplored = 0;
     while (!queue.empty()) {
         // Get the node with the highest upper bound
         auto currentNode = queue.top();
         queue.pop();
-        nodesExplored++;
+        nodesExplored_++;
         
         // If this node's upper bound is not better than our current best solution, prune it
         if (currentNode->upperBound <= bestDiversity) {
@@ -93,33 +90,9 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
         }
     }
     
-    std::cout << "Branch and Bound explored " << nodesExplored << " nodes" << std::endl;
+    std::cout << "Branch and Bound explored " << nodesExplored_ << " nodes" << std::endl;
     
     return bestSolution;
-}
-
-std::vector<Element> BranchAndBoundAlgorithm::getGreedySolution(const std::vector<Element>& elements, int numToSelect) {
-    // Create a copy of the elements to work with
-    std::vector<Element> elementsCopy = elements;
-    std::vector<Element> selectedElements;
-    selectedElements.reserve(numToSelect);
-    
-    // Calculate the center of gravity of all elements
-    std::vector<double> center = calculateCenterOfGravity(elementsCopy);
-    
-    // Select m elements using greedy algorithm
-    while (selectedElements.size() < numToSelect && !elementsCopy.empty()) {
-        int farthestIdx = findNFarthestElement(elementsCopy, center, 3);
-        if (farthestIdx == -1) break;
-        
-        selectedElements.push_back(elementsCopy[farthestIdx]);
-        elementsCopy.erase(elementsCopy.begin() + farthestIdx);
-        
-        // Update center of gravity based on selected elements
-        center = calculateCenterOfGravity(selectedElements);
-    }
-    
-    return selectedElements;
 }
 
 double BranchAndBoundAlgorithm::calculateDiversityContribution(

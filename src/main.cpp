@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
   // Load problem instance
   ProblemInstance instance(argv[1]);
   std::cout << "Instance loaded successfully.\n";
+  int nodesExplored = 0;
   
   // Solution object
   Solution solution(instance.getElements());
@@ -70,8 +71,9 @@ int main(int argc, char* argv[]) {
     }
     case 4: { // Branch and Bound algorithm
       std::cout << "Using Branch and Bound Algorithm...\n";
-      BranchAndBoundAlgorithm bnb(instance, options.m);
+      BranchAndBoundAlgorithm bnb(instance, options.m, options.graspN);
       solution.setSelectedElements(bnb.solve());
+      nodesExplored = bnb.getNodesExplored();
       break;
     }
     default:
@@ -96,7 +98,7 @@ int main(int argc, char* argv[]) {
   }
   
   // Print result in unified format for later processing
-  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << options.iterations << ", " << options.graspN << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << std::endl;
+  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << options.iterations << ", " << options.graspN << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << ", " << nodesExplored << std::endl;
 
   return 0;
 }

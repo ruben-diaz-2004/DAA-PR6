@@ -4,7 +4,7 @@
 #include "include/utils.h"
 
 
-void LocalSearch::runLocalSearch() {
+std::vector<Element> LocalSearch::runLocalSearch() {
   std::vector<Element> currentSolution = solution_.getSelectedElements();
   double currentDiversity = evaluateDiversity(currentSolution);
   bool improved = true;
@@ -34,4 +34,5 @@ void LocalSearch::runLocalSearch() {
     }
   }
   solution_.setSelectedElements(currentSolution);
+  return currentSolution;
 }

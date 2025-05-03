@@ -11,7 +11,7 @@ mkdir -p $RESULTS_DIR
 
 # Crear un archivo para los resultados dentro de la carpeta
 RESULTS_FILE="$RESULTS_DIR/resultados.csv"
-echo "Instancia, n, K, m, iter, LRC, z, S, Tiempo CPU" > $RESULTS_FILE
+echo "Instancia, n, K, m, iter, LRC, z, S, Tiempo CPU, nodos generados" > $RESULTS_FILE
 
 # Ejecutar el programa para cada archivo en la carpeta instances
 for file in instances/*; do
@@ -19,7 +19,7 @@ for file in instances/*; do
     echo "Procesando $file..."
     
     # Ejecutar el programa con los parámetros adecuados
-    output=$(./bin/daa-prs "$file" $ALGORITHM -m $M -it 20)
+    output=$(./bin/daa-prs "$file" $ALGORITHM -m $M -lrc 2)
     # output=$(./bin/daa-prs "$file")
 
     # Extraer la línea de resultado (la que comienza con RESULTADO)

@@ -15,7 +15,7 @@ public:
       : solution_(solution), m_(m) {}
 
   // Perform local search to improve the solution
-  void runLocalSearch();
+  std::vector<Element> runLocalSearch();
 
 private:
   Solution& solution_;

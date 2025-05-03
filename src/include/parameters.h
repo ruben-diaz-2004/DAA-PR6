@@ -41,6 +41,10 @@
         options.algorithm = 3;
       } else if (*it == "-bnb") {
         options.algorithm = 4;
+      } else if (*it == "-lrc") {
+        if (it + 1 != end) {
+          options.graspN = std::stoi(*++it);
+        }
       } else if (*it == "-m") {
         if (it + 1 != end) {
           options.m = std::stoi(*++it);
