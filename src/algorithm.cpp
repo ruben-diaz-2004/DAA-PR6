@@ -1,3 +1,13 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Diseño y Análisis de Algoritmos 2024-2025
+  *
+  * @author Rubén Díaz Marrero 
+  * @date 25/03/2025
+  * @brief Maximum Diversity Problem
+  */
 #include "include/algorithm.h"
 #include "include/element.h"
 
@@ -8,19 +18,19 @@
 #include <utility>
 
 std::vector<double> Algorithm::calculateCenterOfGravity(const std::vector<Element>& elements) {
-    std::vector<double> center(elements[0].getNodes().size(), 0.0);
-    // Sum up the coordinates of all elements
-    for (const auto& element : elements) {
-        const auto& nodes = element.getNodes();
-        for (size_t i = 0; i < nodes.size(); ++i) {
-            center[i] += nodes[i];
-        }
+  std::vector<double> center(elements[0].getNodes().size(), 0.0);
+  // Sum up the coordinates of all elements
+  for (const auto& element : elements) {
+    const auto& nodes = element.getNodes();
+    for (size_t i = 0; i < nodes.size(); ++i) {
+      center[i] += nodes[i];
     }
-    // Average the coordinates
-    for (auto& coord : center) {
-        coord /= elements.size();
-    }
-    return center;
+  }
+  // Average the coordinates
+  for (auto& coord : center) {
+    coord /= elements.size();
+  }
+  return center;
 }
 
 int Algorithm::findFarthestElement(const std::vector<Element>& elements, const std::vector<double>& center) {

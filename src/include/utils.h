@@ -1,3 +1,13 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Diseño y Análisis de Algoritmos 2024-2025
+  *
+  * @author Rubén Díaz Marrero 
+  * @date 25/03/2025
+  * @brief Maximum Diversity Problem
+  */
 #ifndef UTILS_H
 #define UTILS_H
 

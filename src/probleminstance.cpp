@@ -1,3 +1,13 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Diseño y Análisis de Algoritmos 2024-2025
+  *
+  * @author Rubén Díaz Marrero 
+  * @date 25/03/2025
+  * @brief Maximum Diversity Problem
+  */
 #include "include/instanceparcer.h"
 #include "include/element.h"
 #include "include/solution.h"
@@ -5,14 +15,17 @@
 
 
 ProblemInstance::ProblemInstance(const std::string& filename) {
-    InstanceParser parser(filename);
-    elements_ = parser.getElements();
-    numElements_ = elements_.size();
-    n_ = parser.getN();
-    K_ = parser.getK();
-    calculateDistanceMatrix();
+  InstanceParser parser(filename);
+  elements_ = parser.getElements();
+  numElements_ = elements_.size();
+  n_ = parser.getN();
+  K_ = parser.getK();
+  calculateDistanceMatrix();
 }
 
+/**
+  * @brief Print the problem instance.
+  */
 void ProblemInstance::printInstance() const {
   std::cout << "Number of elements: " << numElements_ << "\n";
   for (const auto& element : elements_) {
@@ -26,6 +39,9 @@ void ProblemInstance::printInstance() const {
   }
 }
 
+/**
+  * @brief Calculate the distance matrix between elements.
+  */
 void ProblemInstance::calculateDistanceMatrix() {
   distanceMatrix_.resize(numElements_, std::vector<double>(numElements_, 0.0));
   for (size_t i = 0; i < numElements_; ++i) {
@@ -43,6 +59,12 @@ void ProblemInstance::calculateDistanceMatrix() {
   }
 }
 
+/**
+  * @brief Get the distance between two elements by their IDs.
+  * @param id1 ID of the first element.
+  * @param id2 ID of the second element.
+  * @return Distance between the two elements.
+  */
 double ProblemInstance::getDistance(int id1, int id2) const {
     if (id1 < 0 || id1 >= numElements_ || id2 < 0 || id2 >= numElements_) {
         std::cerr << "Error: Invalid element IDs." << std::endl;

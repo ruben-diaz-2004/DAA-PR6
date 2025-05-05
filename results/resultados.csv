@@ -1,0 +1,3 @@
+Instancia, n, K, m, iter, LRC, z, S, Tiempo CPU, nodos generados
+max_div_15_2.txt, 15, 2, 6, 10, 2, 113.411, 0 9 3 6 14 8 , 6.81223, 13720
+max_div_15_3.txt, 15, 3, 6, 10, 2, 137.994, 13 10 11 3 4 8 , 2.18467, 3411

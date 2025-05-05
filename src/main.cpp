@@ -2,11 +2,11 @@
   * Universidad de La Laguna
   * Escuela Superior de Ingeniería y Tecnología
   * Grado en Ingeniería Informática
-  * Diseño y análisis de algoritmos 2024-2025
+  * Diseño y Análisis de Algoritmos 2024-2025
   *
   * @author Rubén Díaz Marrero 
   * @date 25/03/2025
-  * @brief Maximum Diversity Problem - Greedy Algorithm Implementation
+  * @brief Maximum Diversity Problem
   */
 #include <iostream>
 #include <string>

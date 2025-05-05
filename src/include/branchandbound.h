@@ -1,3 +1,13 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Diseño y Análisis de Algoritmos 2024-2025
+  *
+  * @author Rubén Díaz Marrero 
+  * @date 25/03/2025
+  * @brief Maximum Diversity Problem
+  */
 #ifndef BRANCHANDBOUND_H
 #define BRANCHANDBOUND_H
 
@@ -20,16 +30,10 @@ public:
     // Get the number of nodes explored
     int getNodesExplored() const { return nodesExplored_; }
 private:
-    int m_;  // Number of elements to select
-    int lrc_; // Local search radius for GRASP
-    int nodesExplored_ = 0; // Number of nodes explored in the search tree
-    // Get greedy solution for initial lower bound
-    std::vector<Element> getGraspSolution(const std::vector<Element>& elements, int numToSelect, int lrc);
-    // Calculate upper bound for a node
+    int m_;
+    int lrc_;
+    int nodesExplored_ = 0;
     double calculateUpperBound(const std::vector<Element>& selected, const std::vector<Element>& candidates, double currentDiversity);
-    // Get lower bound using greedy algorithm
-    double getLowerBound(const std::vector<Element>& initialElements, int numToSelect);
-    // Calculate diversity contribution of a new element
     double calculateDiversityContribution(const Element& element, const std::vector<Element>& selected);
 };
 

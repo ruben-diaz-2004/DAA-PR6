@@ -1,3 +1,13 @@
+/**
+  * Universidad de La Laguna
+  * Escuela Superior de Ingeniería y Tecnología
+  * Grado en Ingeniería Informática
+  * Diseño y Análisis de Algoritmos 2024-2025
+  *
+  * @author Rubén Díaz Marrero 
+  * @date 25/03/2025
+  * @brief Maximum Diversity Problem
+  */
 #ifndef LOCALSEARCH_H
 #define LOCALSEARCH_H
 
@@ -14,7 +24,6 @@ public:
   LocalSearch(Solution& solution, int m)
       : solution_(solution), m_(m) {}
 
-  // Perform local search to improve the solution
   std::vector<Element> runLocalSearch();
 
 private:

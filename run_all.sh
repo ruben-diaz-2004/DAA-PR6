@@ -3,7 +3,7 @@
 # Define los parámetros para el algoritmo (ajusta según tus necesidades)
 ALGORITHM="-bnb"  # Puedes cambiar a "-greedy" si prefieres
 GRASP_N=5
-M=5
+M=6
 
 # Crear la carpeta para los resultados si no existe
 RESULTS_DIR="results"
