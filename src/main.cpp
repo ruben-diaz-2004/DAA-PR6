@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
   }
   
   // Print result in unified format for later processing
-  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << options.iterations << ", " << options.graspN << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << ", " << nodesExplored << std::endl;
+  std::cout << "RESULTADO," << filename << ", " << instance.getN() << ", " << instance.getK() << ", " << options.m << ", " << evaluateDiversity(solution.getSelectedElements()) << ", " << solution.toString() << ", " << cpu_time << ", " << nodesExplored << std::endl;
 
   return 0;
 }

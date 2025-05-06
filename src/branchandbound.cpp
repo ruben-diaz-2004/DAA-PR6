@@ -13,8 +13,8 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
   std::vector<Element> bestSolution;
   double bestDiversity = 0.0;
   std::vector<Element> allElements = instance_.getElements();
-  GraspAlgorithm grasp(instance_, m_, lrc_, 10);
-  std::vector<Element> greedySolution = grasp.solve();
+  GreedyAlgorithm greedy(instance_, m_);
+  std::vector<Element> greedySolution = greedy.solve();
   bestDiversity = evaluateDiversity(greedySolution);
   bestSolution = greedySolution;
   std::cout << "Initial lower bound (grasp solution): " << bestDiversity << std::endl;
@@ -29,7 +29,16 @@ std::vector<Element> BranchAndBoundAlgorithm::solve() {
   queue.push(rootNode);
   while (!queue.empty()) {
     auto currentNode = queue.top();
-    queue.pop();
+    if (queue.size() >= 2) {
+      auto best_node = queue.top();
+      queue.pop();
+      currentNode = queue.top();
+      queue.pop();
+      queue.push(best_node);
+    } else {
+      currentNode = queue.top();
+      queue.pop();
+    }
     nodesExplored_++;
     if (currentNode->upperBound <= bestDiversity) { // If this node's upper bound is not better than our current best solution, prune it
       continue;

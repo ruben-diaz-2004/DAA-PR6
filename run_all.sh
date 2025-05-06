@@ -3,7 +3,7 @@
 # Define los parámetros para el algoritmo (ajusta según tus necesidades)
 ALGORITHM="-bnb"  # Puedes cambiar a "-greedy" si prefieres
 GRASP_N=5
-M=6
+M=5
 
 # Crear la carpeta para los resultados si no existe
 RESULTS_DIR="results"
@@ -11,7 +11,7 @@ mkdir -p $RESULTS_DIR
 
 # Crear un archivo para los resultados dentro de la carpeta
 RESULTS_FILE="$RESULTS_DIR/resultados.csv"
-echo "Instancia, n, K, m, iter, LRC, z, S, Tiempo CPU, nodos generados" > $RESULTS_FILE
+echo "Instancia, n, K, m, z, S, Tiempo CPU, nodos generados" > $RESULTS_FILE
 
 # Ejecutar el programa para cada archivo en la carpeta instances
 for file in instances/*; do
